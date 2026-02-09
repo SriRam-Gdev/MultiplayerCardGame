@@ -1,0 +1,25 @@
+{
+  "cards": [
+    {
+      "id": 1,
+      "name": "Shield",
+      "cost": 2,
+      "power": 3,
+      "ability": { "type": "GainPoints", "value": 2 }
+    },
+    {
+      "id": 2,
+      "name": "Thief",
+      "cost": 1,
+      "power": 1,
+      "ability": { "type": "StealPoints", "value": 1 }
+    },
+    {
+      "id": 3,
+      "name": "Mage",
+      "cost": 3,
+      "power": 4,
+      "ability": { "type": "DoublePower", "value": 0 }
+    }
+  ]
+}
