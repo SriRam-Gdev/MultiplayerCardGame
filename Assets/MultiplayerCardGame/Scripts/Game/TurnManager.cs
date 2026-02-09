@@ -10,10 +10,17 @@ public class TurnManager : MonoBehaviour
     bool myTurnEnded = false;
     int endedPlayers = 0;
 
-    void Awake()
+  void Awake()
+{
+    if (Instance == null)
     {
         Instance = this;
+        Debug.Log("TurnManager initialized");
     }
+    else
+        Destroy(gameObject);
+}
+
 
     void Update()
     {
@@ -26,34 +33,29 @@ public class TurnManager : MonoBehaviour
     }
 
     public void EndTurn()
+{
+    if (myTurnEnded) return;
+
+    if (PlayerNetwork.LocalPlayer == null)
     {
-        if (myTurnEnded) return;
-
-        myTurnEnded = true;
-
-        JsonMessage msg = new JsonMessage
-        {
-            action = "endTurn",
-            playerId = PlayerNetwork.LocalPlayer.netId.ToString()
-        };
-
-        PlayerNetwork.LocalPlayer.CmdSendJson(JsonUtility.ToJson(msg));
-
-        Debug.Log("Sent End Turn");
+        Debug.Log("Waiting for network player...");
+        return;
     }
 
-    public void OnPlayerEnded(string playerId)
+    myTurnEnded = true;
+
+    JsonMessage msg = new JsonMessage
     {
-        endedPlayers++;
+        action = "endTurn",
+        playerId = PlayerNetwork.LocalPlayer.netId.ToString()
+    };
 
-        Debug.Log("Player ended turn: " + playerId);
+    PlayerNetwork.LocalPlayer.CmdSendJson(JsonUtility.ToJson(msg));
 
-        if (endedPlayers >= 2)
-        {
-            endedPlayers = 0;
-            StartNextTurn();
-        }
-    }
+    Debug.Log("Sent End Turn");
+}
+
+
 
     public void StartNextTurn()
     {
@@ -64,3 +66,5 @@ public class TurnManager : MonoBehaviour
         Debug.Log("Turn " + currentTurn + " started");
     }
 }
+
+
