@@ -10,17 +10,16 @@ public class TurnManager : MonoBehaviour
     bool myTurnEnded = false;
     int endedPlayers = 0;
 
-  void Awake()
-{
-    if (Instance == null)
+    void Awake()
     {
-        Instance = this;
-        Debug.Log("TurnManager initialized");
+        if (Instance == null)
+        {
+            Instance = this;
+            Debug.Log("TurnManager initialized");
+        }
+        else
+            Destroy(gameObject);
     }
-    else
-        Destroy(gameObject);
-}
-
 
     void Update()
     {
@@ -33,38 +32,67 @@ public class TurnManager : MonoBehaviour
     }
 
     public void EndTurn()
-{
-    if (myTurnEnded) return;
-
-    if (PlayerNetwork.LocalPlayer == null)
     {
-        Debug.Log("Waiting for network player...");
-        return;
+        if (myTurnEnded) return;
+
+        if (PlayerNetwork.LocalPlayer == null)
+            return;
+
+        myTurnEnded = true;
+
+        // Lock selected cards into folded pile
+        if (HandManager.Instance != null)
+            HandManager.Instance.FoldSelectedCards();
+
+        JsonMessage msg = new JsonMessage
+        {
+            action = "endTurn",
+            playerId = PlayerNetwork.LocalPlayer.netId.ToString(),
+            foldedCount = HandManager.Instance != null ? 
+                          HandManager.Instance.foldedCards.Count : 0
+        };
+
+        PlayerNetwork.LocalPlayer.CmdSendJson(JsonUtility.ToJson(msg));
+
+        Debug.Log("End Turn sent");
     }
 
-    myTurnEnded = true;
-
-    JsonMessage msg = new JsonMessage
+    public void OnPlayerEnded(string playerId)
     {
-        action = "endTurn",
-        playerId = PlayerNetwork.LocalPlayer.netId.ToString()
-    };
+        endedPlayers++;
 
-    PlayerNetwork.LocalPlayer.CmdSendJson(JsonUtility.ToJson(msg));
+        Debug.Log("Player ended: " + playerId);
 
-    Debug.Log("Sent End Turn");
-}
+        if (endedPlayers >= 2)
+        {
+            endedPlayers = 0;
 
+            // Start reveal phase (local for now)
+            if (RevealManager.Instance != null && HandManager.Instance != null)
+            {
+                RevealManager.Instance.StartReveal(
+                    HandManager.Instance.foldedCards,
+                    HandManager.Instance.foldedCards   // temp until opponent list added
+                );
+            }
 
+            StartNextTurn();
+        }
+    }
 
-    public void StartNextTurn()
+    void StartNextTurn()
     {
         currentTurn++;
+
+        if (currentTurn > 6)
+        {
+            Debug.Log("GAME OVER");
+            return;
+        }
+
         turnTimer = 30f;
         myTurnEnded = false;
 
         Debug.Log("Turn " + currentTurn + " started");
     }
 }
-
-

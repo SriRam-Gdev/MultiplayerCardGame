@@ -5,10 +5,10 @@ public class PlayerNetwork : NetworkBehaviour
 {
     public static PlayerNetwork LocalPlayer;
 
-    void Start()
+    public override void OnStartLocalPlayer()
     {
-        if (isLocalPlayer)
-            LocalPlayer = this;
+        LocalPlayer = this;
+        Debug.Log("Local player ready");
     }
 
     [Command]
@@ -22,7 +22,5 @@ public class PlayerNetwork : NetworkBehaviour
     {
         if (GameMessageRouter.Instance != null)
             GameMessageRouter.Instance.Handle(json);
-        else
-            Debug.LogError("GameMessageRouter not found in scene!");
     }
 }
