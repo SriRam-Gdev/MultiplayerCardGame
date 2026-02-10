@@ -1,182 +1,52 @@
-Unity Multiplayer Turn-Based Card Game (Prototype)
+🃏 Unity Multiplayer Turn-Based Card Game (Prototype)
 
-A lightweight 1v1 online turn-based card game prototype built in Unity, focused on multiplayer synchronization, turn flow, and reveal-based resolution.
+A simple 1v1 online turn-based card game built in Unity focusing on multiplayer synchronization, turn flow, and reveal-based gameplay.
 
-Project Goals
+🚀 Features
 
-This project explores:
+Real-time multiplayer using Mirror Networking
 
-Multiplayer connectivity using Mirror Networking
+Turn-based system with timers and End Turn sync
 
-Turn-based game flow with timers
+Card selection with cost limits
 
-Card selection & folding system
+Folding system (hidden plays)
 
-Alternating reveal resolution
-
-Real-time score updates
-
-Clean modular architecture
-
-Networking
-
-Solution Used: Mirror Networking
-
-Features:
-
-Host & Client multiplayer setup
-
-JSON-based message passing between players
-
-Turn synchronization across both clients
-
-Event-driven message routing
-
-Game Flow
-Match Structure
-
-2 players (1v1)
-
-6 total turns
-
-Each turn:
-
-Players select multiple cards (within cost limit)
-
-End Turn locks selections (folding)
-
-When both players end → reveal phase starts
-
-Turn System
-
-30-second timer per turn
-
-Manual End Turn button
-
-Game waits until both players are ready
-
- Folding Phase
-
-Selected cards become locked
-
-Opponent only receives folded card count
-
-Cards cannot be modified after folding
-
-Reveal Phase
-
-Reveal starts only when both players end turn
-
-Initiative determined by current score
-
-Cards revealed in alternating sequence
-
-Each reveal immediately updates score
-
-Scoring
-
-Card power adds to player score
-
-Score updates after each reveal
-
-Final winner determined after 6 turns
-
-Card System
-
-Current prototype uses hardcoded card data for speed:
-
-Example card attributes:
-
-ID
-
-Name
-
-Cost
-
-Power
-
-(Architecture prepared for JSON-driven cards if extended)
-
-Architecture Overview
-Scripts/
-  Networking/
-    PlayerNetwork.cs
-    GameMessageRouter.cs
-    JsonMessage.cs
-
-  Game/
-    TurnManager.cs
-    RevealManager.cs
-    ScoreManager.cs
-
-  Cards/
-    Card.cs
-    HandManager.cs
-
-
-Design principles:
-
-Event-driven messaging
-
-Clear separation of gameplay & networking
-
-Modular systems
-
-Simple and readable code
-
- How to Run
-PC Testing
-
-Open project in Unity
-
-Press Play → Click Host
-
-Build project → Run executable → Click Client
-
-Android Build
-
-(Android build supported using Unity Build Settings)
-
-Gameplay Demonstrates
-
-Multiplayer connection
-
-Card selection
-
-Folding
-
-Reveal order
+Alternating reveal phase
 
 Live score updates
 
-Notes & Limitations
+🌐 Networking
 
-Card data currently hardcoded (JSON loader prepared but skipped due to time)
+Host & Client multiplayer setup
 
-UI kept minimal to focus on core logic
+JSON-based message communication
 
-Reconnection handling not fully implemented
+Event-driven game flow
 
-Future Improvements
+🎮 Game Flow
 
-Full JSON-driven card system
+Players select cards each turn
 
-Visual card animations
+End Turn locks selections (folding)
 
-Ability effects system
+When both players are ready → reveal phase starts
 
-Reconnection state recovery
+Cards reveal in alternating order
 
-Improved UI/UX
+Scores update after each reveal
 
-Tech Stack
+Game ends after 6 turns
 
-Unity
+🧠 Architecture
+Networking → Game Logic → Card System → UI
 
-C#
 
-Mirror Networking
+Modular, clean, and event-driven.
 
-JSON messaging
 
-Modular event-driven architecture
+⚠️ Notes
+
+Card data currently hardcoded (JSON system prepared but skipped due to time)
+
+UI kept minimal to focus on gameplay logic
