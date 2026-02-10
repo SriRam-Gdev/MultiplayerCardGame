@@ -1,52 +1,93 @@
-🃏 Unity Multiplayer Turn-Based Card Game (Prototype)
+Unity Multiplayer Turn-Based Card Game (Prototype)
 
-A simple 1v1 online turn-based card game built in Unity focusing on multiplayer synchronization, turn flow, and reveal-based gameplay.
+A 1v1 online turn-based card game built in Unity demonstrating multiplayer synchronization, folding mechanics, and alternating reveal resolution.
 
-🚀 Features
+⚙️ Setup Instructions
+Requirements
 
-Real-time multiplayer using Mirror Networking
+Unity (2021+ recommended)
 
-Turn-based system with timers and End Turn sync
+Windows PC or Android device
 
-Card selection with cost limits
+Running the Game (Local Multiplayer Test)
 
-Folding system (hidden plays)
+Open project in Unity
 
-Alternating reveal phase
+Press Play and click Host
 
-Live score updates
+Build the project (File → Build Settings → Build)
 
-🌐 Networking
+Run the built executable or Android APK
 
-Host & Client multiplayer setup
+Click Client to connect to the Host
 
-JSON-based message communication
+Two players will now be connected.
 
-Event-driven game flow
+🌐 Networking Solution
 
-🎮 Game Flow
+Mirror Networking
 
-Players select cards each turn
+Used for:
 
-End Turn locks selections (folding)
+Real-time multiplayer connection (Host + Client)
 
-When both players are ready → reveal phase starts
+Player spawning and synchronization
 
-Cards reveal in alternating order
+JSON-based event messaging between clients
 
-Scores update after each reveal
+All gameplay actions are transmitted using structured JSON messages containing an action field.
 
-Game ends after 6 turns
+🎴 Reveal Sequence & Initiative Logic
+Turn Flow
 
-🧠 Architecture
-Networking → Game Logic → Card System → UI
+Players select cards locally
 
+Press End Turn to lock selections (folding)
 
-Modular, clean, and event-driven.
+Reveal phase starts only when both players are ready
 
+Initiative
 
-⚠️ Notes
+At the start of each reveal phase:
 
-Card data currently hardcoded (JSON system prepared but skipped due to time)
+Player with the higher current score reveals first
 
-UI kept minimal to focus on gameplay logic
+If tied, initiative is chosen randomly
+
+Initiative remains fixed for the entire reveal phase
+
+Reveal Order
+
+Cards are revealed:
+
+In the order they were played
+
+In an alternating sequence between players
+
+Example:
+
+Initiative player reveals card #1 → score updates
+
+Opponent reveals card #1 → score updates
+
+Initiative player reveals card #2 → score updates
+
+Opponent reveals card #2 → score updates
+
+This continues until all folded cards are resolved.
+
+🧠 Notes
+
+Card logic is currently hardcoded for prototyping speed
+
+UI is minimal to focus on core gameplay correctness
+
+Prototype prioritizes networking and turn-based logic over visuals
+
+🛠 Tech Stack
+
+Unity
+
+C#
+
+Mirror Networking
